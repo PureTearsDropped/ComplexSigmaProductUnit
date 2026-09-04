@@ -19,20 +19,33 @@ from complex_sigma_product_unit import Tot, clog0, usable
 
 
 class DeepCSPU(torch.nn.Module):
-    def __init__(self, F, U, depth, head_units=1, embed='logstream', scale=1.0, seed=0):
+    def __init__(self, F, U, depth, head_units=1, embed='logstream', scale=1.0, seed=0, a_init=0.0):
         super().__init__()
         g = torch.Generator().manual_seed(seed)
         self.F, self.U, self.depth, self.embed, self.scale = F, U, depth, embed, scale
         self.W = torch.nn.ParameterList([torch.nn.Parameter(0.1 * torch.complex(torch.randn(U, F, generator=g), torch.randn(U, F, generator=g))) for _ in range(depth)])
         self.a = torch.nn.ParameterList([torch.nn.Parameter(torch.zeros(F, U, dtype=torch.complex128)) for _ in range(depth)])   # identity start
+        if a_init:                                                        # a small symmetry-breaking start (W gets no gradient while a = 0)
+            with torch.no_grad():
+                for a in self.a: a.add_(a_init * torch.complex(torch.randn(a.shape, generator=g), torch.randn(a.shape, generator=g)))
         self.V = torch.nn.Parameter(0.1 * torch.complex(torch.randn(head_units, F, generator=g), torch.randn(head_units, F, generator=g)))
         self.c = torch.nn.Parameter(torch.ones(head_units, dtype=torch.complex128))
 
     @staticmethod
-    def entry(x):
-        """Log₀ on the total arithmetic; returns the complex stream and the mask of usable samples"""
+    def entry(x, with_zero=False):
+        """Log₀ on the total arithmetic; returns the complex stream and the mask of usable samples.  With `with_zero`,
+        also q ∈ {0, 1} per feature — the discrete zero state the log stream cannot carry (Log₀ 0 = 0 is the reserved
+        word, and exp(0) = 1 ≠ 0): the value is q·exp(L)."""
         u, v = clog0(Tot(x.real), Tot(x.imag))
-        return torch.complex(u.val.double(), v.val.double()), usable(u, v).all(dim=1)
+        L = torch.complex(u.val.double(), v.val.double()); m = usable(u, v).all(dim=1)
+        if with_zero:
+            return L, m, (x != 0).double()
+        return L, m
+
+    @staticmethod
+    def value(L, q=None):
+        """back to the value: x = q · exp(L) — an exact zero stays an exact zero"""
+        return torch.exp(L) if q is None else q * torch.exp(L)
 
     def stream(self, L0):
         L = L0; Ls = [L0]
@@ -41,6 +54,8 @@ class DeepCSPU(torch.nn.Module):
             d = P @ a.T                                                   # [N, F]
             if self.embed == 'logstream':
                 L = L + d
+            elif self.embed == 'stacked':                                 # the plain stack: the next layer logs the output (principal branch)
+                L = torch.log(d)
             else:                                                         # z = 1 + i·y/s, logged again (principal branch)
                 L = torch.log(1 + 1j * d / self.scale)
             Ls.append(L)
