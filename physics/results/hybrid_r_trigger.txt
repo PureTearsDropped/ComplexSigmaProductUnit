@@ -1,0 +1,14 @@
+hybrid: Adam + one estimates-averaged fit when the per-sample corrections agree (R > 0.5 and Rayleigh-significant), every 10 steps checked;
+control: the same fit attempted every 10 steps regardless of R.   success = loss < 1e-8 and max|W−true| < 1e-3 (8 seeds)
+F=1 U=3 log grid
+   R-triggered fit    4/8   solved at Adam step median 865   fits attempted mean 0.0   R at the fit / max R: median 0.37   (44 s)
+   fit every 10 steps 4/8   solved at Adam step median 690   fits attempted mean 138.5   (45 s)
+F=1 U=4 log grid
+   R-triggered fit    2/8   solved at Adam step median 1923   fits attempted mean 0.0   R at the fit / max R: median 0.34   (61 s)
+   fit every 10 steps 2/8   solved at Adam step median 1740   fits attempted mean 187.2   (63 s)
+F=2 U=2 complex box
+   R-triggered fit    4/8   solved at Adam step median 972   fits attempted mean 4.4   R at the fit / max R: median 0.50   (55 s)
+   fit every 10 steps 4/8   solved at Adam step median 800   fits attempted mean 147.0   (54 s)
+F=2 U=3 complex box
+   R-triggered fit    1/8   solved at Adam step median 1391   fits attempted mean 0.0   R at the fit / max R: median 0.33   (73 s)
+   fit every 10 steps 1/8   solved at Adam step median 1290   fits attempted mean 190.2   (79 s)

@@ -50,3 +50,43 @@ basin (median error 0.09, worst 10), and any outliers destroy it — in practice
 problem, not the refinement.  The von Mises centre is the better refinement under outliers (median 6× closer at
 15 %, 2× at 5 %, when started near the truth) and equal without them — a modest, real gain as a step rule; it is
 not a fix for the landscape.  Both are recorded as measured; neither is tuned.
+
+## Deciding the exponents: R as a candidate detector, verification as the judge
+
+The user's trace of the wave (per-sample gradient directions, von Mises R per feature, 5 seeds) showed that
+the direction consensus is **not** monotone and **not** a truth signal: at update 430 of the reference seed
+R_T = 0.96 while the T exponent is still 2.09 off (a real, damping error with the phase almost right — every
+sample agrees on the *same* correction), and the truth is reached only after further, weaker consensus
+events.  Selecting, among the checkpoints with max R ≥ 0.3, the one whose coefficients refitted from scratch
+give the smallest held-out error picked the minimum-error checkpoint in 5 of 5 seeds.  So R says "a
+coherent hypothesis has appeared", and a cheap verification says whether it is the right one.
+
+Two checks on this side (`physics/gn_from_trajectory.py`, `physics/hybrid_r_trigger.py`,
+`physics/decide_exponents.py`, results in `physics/results/`):
+
+- **High R is the condition of the linearisation.**  One estimates-averaged fit (Gauss–Newton with the
+  coefficients re-solved) from the user's own trajectory points, on their data: update 430 (R 0.96, error 2.1)
+  → machine precision in 6 iterations; update 475 (R 0.92) → 2 iterations; and for this single unit even
+  update 300 (R 0.27, error 4.7) → 23 iterations.  A 900-step detour for one unit is not necessary; the
+  R events are where the fit is cheapest.
+- **On multi-unit aggregates the R gate (0.5 on the correction cloud) rarely fired**, so "Adam + R-triggered
+  fit" equalled Adam alone (4/8, 2/8, 4/8, 1/8 on the four problems), and a fit attempted every 10 steps
+  regardless of R gave the same success — a fit from a random-ish point does not find the units.  What did:
+  **rounding the exponents to the admissible lattice and verifying by the linear refit's residual**, tried
+  every 10 steps — integer-exponent aggregates with complex coefficients, random start, Adam alone 0/8:
+
+| problem | Adam | + R-triggered fit | + R-triggered fit + round + verify | + round + verify every 10 steps |
+|---|---|---|---|---|
+| F=2 U=2 | 0/8 | 0/8 | 2/8 | **5/8** |
+| F=3 U=3 | 0/8 | 0/8 | 0/8 | **4/8** |
+| series RLC from the total impedance (F=4, U=3) | 0/8 | 0/8 | 0/8 | **5/8** |
+
+The RLC's three units recovered from the aggregate impedance alone — the open item of `EXPERIMENT_RESULT.md`
+— for the first time, by the sieve: the lattice proposes, the residual decides, and the decision is taken
+while Adam is still far away (median step 1 390 of 2 000).  Rounding at the R events only (threshold 0.5)
+was worse because the events are rare on multi-unit problems; a lower threshold, or none, costs one least
+squares per check.  The two-stage rule the user proposed — R marks candidates; W fixed → a by least squares
+(the exact form of the refit; no need to re-train it) → held-out error selects → freeze W, final fit — is
+the same scheme with a continuous candidate set; the lattice version is its discrete form.  Not yet done:
+noise, the wrong-but-coherent basins as a *sequence of hypotheses* (the user's reading), and the aliases
+(a wrong exponent on which the samples agree is one the data cannot distinguish over their span).

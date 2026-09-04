@@ -1,0 +1,16 @@
+integer exponents, complex coefficients, aggregate observable, random start (all channels 1 ± 0.1); success = loss < 1e-8 and max|W−true| < 1e-3 (8 seeds)
+F=2 U=2
+   Adam alone                                 0/8   solved at step median     —   attempts mean   0.0   (73 s)
+   Adam + R-triggered fit                     0/8   solved at step median     —   attempts mean   1.6   (73 s)
+   Adam + R-triggered fit + round + verify    2/8   solved at step median    60   attempts mean   1.1   (56 s)
+   Adam + round + verify every 10 steps       5/8   solved at step median   420   attempts mean  82.9   (31 s)
+F=3 U=3
+   Adam alone                                 0/8   solved at step median     —   attempts mean   0.0   (87 s)
+   Adam + R-triggered fit                     0/8   solved at step median     —   attempts mean   0.0   (87 s)
+   Adam + R-triggered fit + round + verify    0/8   solved at step median     —   attempts mean   0.0   (87 s)
+   Adam + round + verify every 10 steps       4/8   solved at step median  1220   attempts mean 128.5   (56 s)
+series RLC from the total impedance (F=4, U=3)
+   Adam alone                                 0/8   solved at step median     —   attempts mean   0.0   (126 s)
+   Adam + R-triggered fit                     0/8   solved at step median     —   attempts mean   0.0   (107 s)
+   Adam + R-triggered fit + round + verify    0/8   solved at step median     —   attempts mean   0.0   (108 s)
+   Adam + round + verify every 10 steps       5/8   solved at step median  1390   attempts mean 158.0   (85 s)

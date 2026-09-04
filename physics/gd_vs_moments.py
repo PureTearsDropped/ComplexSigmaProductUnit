@@ -58,19 +58,24 @@ def moments(F, U, xre, xim, yre, yim, init, delta, seed=0, center='lstsq'):
         lt, _, _ = masked_cmse(pre, pim, yre, yim, relative=True)          # the loss of the *layer* (total arithmetic) at the fit
     return lt.item(), W, it
 
-print("the aggregate problem: U units from one observable, W and a together — success = relative loss < 1e-8 and max|W−true| < 1e-3 (8 seeds)")
-for F, U, grid in ((1, 2, True), (1, 3, True), (1, 4, True), (2, 2, False), (2, 3, False)):
-    rows = []
-    for method in (('Adam (gradients averaged)', 'gd'), ('lstsq mean, random starts', 'rand'), ('von Mises centre, random starts', 'vm')) + ((('lstsq mean, pencil start', 'pencil'), ('von Mises centre, pencil start', 'vmp')) if grid else ()):
-        ok = 0; t0 = time.time(); losses = []
-        for s in range(8):
-            xre, xim, yre, yim, Wt, at, delta = make(300 + s, F, U, grid)
-            if method[1] == 'gd':
-                L, W = gd(F, U, xre, xim, yre, yim, seed=s)
-            else:
-                L, W, it = moments(F, U, xre, xim, yre, yim, 'pencil' if method[1] in ('pencil', 'vmp') else 'random', delta, seed=s, center='vonmises' if method[1] in ('vm', 'vmp') else 'lstsq')
-            e = match_error(W, Wt) if W is not None else float('inf')
-            ok += (L < 1e-8 and e < 1e-3); losses.append(L)
-        losses.sort()
-        rows.append(f"   {method[0]:28s} {ok}/8   median loss {losses[4]:.1e}   worst {losses[-1]:.1e}   ({time.time()-t0:.0f} s)")
-    print(f"F={F} U={U} {'log grid (40 points)' if grid else 'complex box (400 points)'}"); print('\n'.join(rows), flush=True)
+def main():
+    print("the aggregate problem: U units from one observable, W and a together — success = relative loss < 1e-8 and max|W−true| < 1e-3 (8 seeds)")
+    for F, U, grid in ((1, 2, True), (1, 3, True), (1, 4, True), (2, 2, False), (2, 3, False)):
+        rows = []
+        for method in (('Adam (gradients averaged)', 'gd'), ('lstsq mean, random starts', 'rand'), ('von Mises centre, random starts', 'vm')) + ((('lstsq mean, pencil start', 'pencil'), ('von Mises centre, pencil start', 'vmp')) if grid else ()):
+            ok = 0; t0 = time.time(); losses = []
+            for s in range(8):
+                xre, xim, yre, yim, Wt, at, delta = make(300 + s, F, U, grid)
+                if method[1] == 'gd':
+                    L, W = gd(F, U, xre, xim, yre, yim, seed=s)
+                else:
+                    L, W, it = moments(F, U, xre, xim, yre, yim, 'pencil' if method[1] in ('pencil', 'vmp') else 'random', delta, seed=s, center='vonmises' if method[1] in ('vm', 'vmp') else 'lstsq')
+                e = match_error(W, Wt) if W is not None else float('inf')
+                ok += (L < 1e-8 and e < 1e-3); losses.append(L)
+            losses.sort()
+            rows.append(f"   {method[0]:28s} {ok}/8   median loss {losses[4]:.1e}   worst {losses[-1]:.1e}   ({time.time()-t0:.0f} s)")
+        print(f"F={F} U={U} {'log grid (40 points)' if grid else 'complex box (400 points)'}"); print('\n'.join(rows), flush=True)
+
+
+if __name__ == '__main__':
+    main()

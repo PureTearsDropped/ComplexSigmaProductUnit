@@ -1,0 +1,5 @@
+update 100 (R_T = 0.09, |W−true| = 4.483) → GN: 30 iterations, loss 2.5e-04, |W−true| = 3.4e-02, a = 0.799553-0.599708j
+update 300 (R_T = 0.27, |W−true| = 4.747) → GN: 23 iterations, loss 1.9e-16, |W−true| = 3.0e-08, a = 0.800000-0.600000j
+update 400 (R_T = 0.76, |W−true| = 2.998) → GN:  9 iterations, loss 1.8e-17, |W−true| = 9.0e-09, a = 0.800000-0.600000j
+update 430 (R_T = 0.96, |W−true| = 2.097) → GN:  6 iterations, loss 9.1e-17, |W−true| = 2.0e-08, a = 0.800000-0.600000j
+update 475 (R_T = 0.92, |W−true| = 0.042) → GN:  2 iterations, loss 1.2e-18, |W−true| = 2.3e-09, a = 0.800000-0.600000j
