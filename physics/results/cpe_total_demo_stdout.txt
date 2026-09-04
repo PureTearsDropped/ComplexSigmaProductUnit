@@ -1,0 +1,55 @@
+A. the constant-phase element in total arithmetic (α = 0.8)
+   ω = 0.01    (iω)^(−α) = 39.810717055349734∠-0.4π     arg/π = -0.4000  (= −α/2 = -0.4000: the phase reads the exponent)
+   ω = 1       (iω)^(−α) = 1.0∠-0.4π     arg/π = -0.4000  (= −α/2 = -0.4000: the phase reads the exponent)
+   ω = 10000   (iω)^(−α) = 0.000630957344480193∠-0.4π     arg/π = -0.4000  (= −α/2 = -0.4000: the phase reads the exponent)
+   ω = 0 (exact):  Log₀(i·0) = 0.0∠0.0π (§7: L₀(0) = 0, Arg₀(0) = 0) → P = exp(W·0) = 1.0∠0.0π  ← a zero input drops out of the product (§29's normal form)
+                   the reserved-word power says (i·0)^(−α) = 0.0∠0.0π — both are total; the document fixes exp∘Log₀ and so does this demo
+   ω = ε (MIN⟦≤⟧): Log₀(iε) = 708.3981600699136∠0.999294181665171π⟦≥∠?⟧ (L₀(ε) = LOG_MIN, tagged ≥) → P = 1.0∠0.0π⟦≥≤∠?⟧  ← the limit: |P| ≥ 3e246, phase −α/2 kept: a blocking electrode
+   ω = MAX:        P = 2.4901617166715595e-247∠-0.3999999999999784π
+   RLC of Experiment 1 at w = 1, l = 1:  C = 0 → z_LC = 1.0∠0.5π  (1/0 = 0: the term is absent — the arithmetic reads C = 0 as "no capacitor term", i.e. a short);
+                                         C = ε → z_LC = 4.49423283715579e307∠-0.5π⟦≥≤∠?⟧  (an open circuit: the limit, flagged).  Physics wants the open at C → 0: the reserved word says
+                                         the natural variable of a series capacitor is the elastance S = 1/C, whose 0 IS the absent element.
+
+B. the gradient, checked (finite differences vs the hand-written formula)
+   IEEE  (stage 2)    max relative deviation over the 7 parameters: 1.36e-09
+   IEEE  (stage 1)    max relative deviation over the 7 parameters: 7.52e-10
+   TOT   (stage 2)    max relative deviation over the 7 parameters: 6.88e-10
+   TOT   (stage 1)    max relative deviation over the 7 parameters: 5.87e-10
+
+C. the staged learning: exponent from the ratios in the log domain (coefficient cancelled), freeze, then a and r on z = r + a·exp(W·Log₀ s)
+   40 frequencies in [1e-2, 1e4] rad/s, exact   IEEE  stage 1: W = -0.800000+0.000000i (true -0.8) loss 2.7e-25   523 steps, floored 0 excluded 0
+                                                      stage 2: a = +1.000000-0.000000i (true 1)  r = 0.002000 (true 0.002)  loss 2.1e-25   469 steps, floored 0 excluded 0
+   40 frequencies in [1e-2, 1e4] rad/s, exact   TOT   stage 1: W = -0.800000-0.000000i (true -0.8) loss 7.5e-25   531 steps, floored 0 excluded 0
+                                                      stage 2: a = +1.000000-0.000000i (true 1)  r = 0.002000 (true 0.002)  loss 2.9e-25   469 steps, floored 0 excluded 0
+   same, 3 % multiplicative noise               IEEE  stage 1: W = -0.798582-0.001497i (true -0.8) loss 2.7e-03  3000 steps, floored 0 excluded 0
+                                                      stage 2: a = +0.988578+0.002169i (true 1)  r = 0.002000 (true 0.002)  loss 1.6e-03  6000 steps, floored 0 excluded 0
+   same, 3 % multiplicative noise               TOT   stage 1: W = -0.798582-0.001483i (true -0.8) loss 2.7e-03  3000 steps, floored 0 excluded 0
+                                                      stage 2: a = +0.988602+0.002160i (true 1)  r = 0.002000 (true 0.002)  loss 1.6e-03  6000 steps, floored 0 excluded 0
+
+D. the boundaries the earlier experiments avoided (the same schedule, the data set extended)
+   + the DC point ω = 0 (Log₀ 0 = 0 in the model) IEEE  stage 1: W = +0.000000+0.000000i (true -0.8) loss NaN         1 steps, floored 0 excluded 0
+                                                      stage 2: a = +1.000000+0.000000i (true 1)  r = 0.000000 (true 0.002)  loss NaN         1 steps, floored 0 excluded 0
+   + the DC point ω = 0 (Log₀ 0 = 0 in the model) TOT   stage 1: W = -0.800000-0.000000i (true -0.8) loss 8.0e-25   523 steps, floored 0 excluded 0
+                                                      stage 2: a = +1.000000+0.000000i (true 1)  r = 0.002000 (true 0.002)  loss 2.6e-25   469 steps, floored 0 excluded 0
+   + 12 frequencies at 1e±280…±300 (|z|² overflows) IEEE  stage 1: W = -0.800038-0.000112i (true -0.8) loss 6.2e-03  3000 steps, floored 0 excluded 0
+                                                      stage 2: a = +1.000000+0.000000i (true 1)  r = 0.000000 (true 0.002)  loss NaN         1 steps, floored 0 excluded 0
+   + 12 frequencies at 1e±280…±300 (|z|² overflows) TOT   stage 1: W = -0.800038-0.000236i (true -0.8) loss 5.9e-03  3000 steps, floored 0 excluded 0
+                                                      stage 2: a = +0.999657+0.000306i (true 1)  r = 0.001998 (true 0.002)  loss 4.8e-07  6000 steps, floored 0 excluded 6
+   (a floored contribution is one whose gradient underflowed and came back as ±MIN⟦≤⟧ — §22's floor, applied by the arithmetic;
+    an excluded one saturated to MAX⟦≥⟧ or lost its sign — §27's surrogate is 'not a number: leave it out' here)
+
+E. the branch cut of s^(−α) on the negative real axis of the Laplace plane (s = σ + iω, σ < 0)
+   IEEE keeps the side in the sign of a zero (Kahan 1987):  (−1 + 0i)^(−α) = -0.8090169943749476 - 0.587785252292473im   (−1 − 0i)^(−α) = -0.8090169943749476 + 0.587785252292473im
+   total arithmetic has one zero: (−1)^(−α) = 1.0∠-0.8π  (principal: arg = π)
+   the sides are values, not a sign bit:  (−1 + iε)^(−α) = 1.0∠-0.8π⟦≥∠?⟧   (−1 − iε)^(−α) = 1.0∠-0.8π⟦≥∠?⟧
+   … but the polar form stores arg/π ∈ (−1, 1] in a Float64: (−1 − iε) has arg/π = −1 + 7e-309, which rounds to −1 and wraps to +1:
+       arg(−1 + iε)/π = 1.0   arg(−1 − iε)/π = 1.0   flags 6 / 6
+   the direction ε carries survives as a *value* only while |Im/Re| ≳ 1e-16 — below that the polar representation, not the
+   arithmetic, forgets the side.  Kahan's sign bit is a 1-bit answer to a question the polar form cannot even ask;
+   a Cartesian TotComplex (re, im each totalized) would keep im = −MIN⟦≤⟧ and answer it.  Recorded as a limitation.
+       s = -1 ± 1e-08i:  arg/π of s^(−α) = -0.800000 / +0.800000 
+       s = -1 ± 1e-15i:  arg/π of s^(−α) = -0.800000 / +0.800000 
+       s = -1 ± 1e-17i:  arg/π of s^(−α) = -0.800000 / -0.800000 ← merged
+       s = -0.001 ± 1e-08i:  arg/π of s^(−α) = -0.799997 / +0.799997 
+       s = -0.001 ± 1e-15i:  arg/π of s^(−α) = -0.800000 / +0.800000 
+       s = -0.001 ± 1e-17i:  arg/π of s^(−α) = -0.800000 / +0.800000 

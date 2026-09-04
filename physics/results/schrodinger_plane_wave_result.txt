@@ -1,0 +1,6 @@
+psi=A exp(i(kx-omega t)); X=e^x,T=e^t => psi=A X^(ik) T^(-i omega)
+k=1.7 omega=2.8899999999999997
+true A=[0.0, 0.0] learned A=[1.1102230246251565e-16, 0.0]
+true B=[1.7, -2.8899999999999997] learned B=[1.7000000000000002, -2.8899999999999997]
+true coeff=(0.8-0.6j) learned coeff=(0.8-0.6000000000000001j)
+test_mse=1.099696e-31 mean_relative_error=2.749246e-16

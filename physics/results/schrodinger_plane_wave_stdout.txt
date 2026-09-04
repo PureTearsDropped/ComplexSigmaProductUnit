@@ -1,0 +1,17 @@
+PHYSICS: free-particle Schrodinger plane wave
+psi=A exp(i(k x - omega t)), hbar=1,m=1/2 => omega=k^2
+Product inputs X=e^x, T=e^t => psi=A X^(ik) T^(-i omega)
+all four exponent channels exactly 1: True
+initial A= [0.0, 0.0] initial B= [0.0, 0.0] initial P=1
+step=   1 loss=2.256e+00 maxAerr=3.161e-02 maxBerr=2.922e+00
+step=  50 loss=1.128e+00 maxAerr=9.147e-01 maxBerr=3.880e+00
+step= 100 loss=1.065e+00 maxAerr=1.243e+00 maxBerr=4.311e+00
+step= 200 loss=9.890e-01 maxAerr=1.679e+00 maxBerr=4.786e+00
+step= 400 loss=7.343e-01 maxAerr=2.605e+00 maxBerr=1.484e+00
+step= 800 loss=2.530e-17 maxAerr=7.261e-09 maxBerr=5.749e-10
+step=1300 loss=6.482e-32 maxAerr=1.110e-16 maxBerr=0.000e+00
+step=2200 loss=1.304e-31 maxAerr=1.110e-16 maxBerr=2.220e-16
+true effective A= [0.0, 0.0] learned A= [1.1102230246251565e-16, 0.0]
+true effective B= [1.7, -2.8899999999999997] learned B= [1.7000000000000002, -2.8899999999999997]
+true coefficient= (0.8-0.6j) learned coefficient= (0.8-0.6000000000000001j)
+held-out complex MSE=1.100e-31 mean relative error=2.749e-16

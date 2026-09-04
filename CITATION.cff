@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below (record the commit ID and the total-arith-cuda version)."
+type: software
+title: "ComplexSigmaProductUnit: a complex Σ-Product Unit on total arithmetic, with three physics experiments"
+authors:
+  - name: "PureTearsDropped"
+license: 0BSD
+repository-code: "https://github.com/PureTearsDropped/ComplexSigmaProductUnit"
+abstract: "A complex Σ-Product Unit — y = Σ a·exp(Σ W·Log₀ x) with complex inputs, complex exponents from four positive channels, the reserved-word complex logarithm Log₀(0) = 0 / Arg₀(0) = 0, ε as a tagged boundary value and saturation flags — implemented on the total arithmetic of total-arith-cuda, and its physics: a series RLC impedance, a free-particle plane wave and a constant-phase element (a fractional power of a complex variable), learned in a staged schedule through the boundaries where IEEE arithmetic produces NaN (exact zeros, ε, overflow, the branch cut)."
+keywords:
+  - "product unit"
+  - "total arithmetic"
+  - "complex-valued neural network"
+  - "constant phase element"
+  - "impedance spectroscopy"
+  - "reproducibility"

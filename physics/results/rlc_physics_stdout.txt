@@ -1,0 +1,61 @@
+PHYSICS: dimensionless series RLC
+z = Z/Z0 = r + i*w*l - i/(w*c)
+references: R0=10 ohm, omega0=1000 rad/s, L0=10 mH, C0=100 uF, Z0=10 ohm
+
+PHASE 1: exponent-only, component coefficients cancelled by ratios
+all four exponent channels exactly 1 at init: True
+initial max |A|= 0.0 initial max |B|= 0.0
+step=   1 loss=2.520e+00 maxAerr=9.684e-01 maxBerr=0.000e+00
+step=  50 loss=2.430e-02 maxAerr=4.048e-01 maxBerr=0.000e+00
+step= 100 loss=3.373e-04 maxAerr=1.194e-01 maxBerr=0.000e+00
+step= 200 loss=3.473e-08 maxAerr=1.361e-03 maxBerr=0.000e+00
+step= 400 loss=3.827e-18 maxAerr=4.087e-09 maxBerr=0.000e+00
+step= 800 loss=1.336e-31 maxAerr=1.110e-16 maxBerr=0.000e+00
+step=1300 loss=1.352e-31 maxAerr=1.110e-16 maxBerr=0.000e+00
+step=2000 loss=3.549e-31 maxAerr=2.220e-16 maxBerr=0.000e+00
+step=2600 loss=1.942e-31 maxAerr=2.220e-16 maxBerr=0.000e+00
+learned A=
+tensor([[ 1.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00],
+        [ 0.0000e+00,  1.0000e+00,  1.0000e+00,  0.0000e+00],
+        [-2.2204e-16, -1.0000e+00,  2.2204e-16, -1.0000e+00]])
+learned B=
+tensor([[0., 0., 0., 0.],
+        [0., 0., 0., 0.],
+        [0., 0., 0., 0.]])
+held-out mean relative magnitude error: 5.693126766509726e-17
+
+PHASE 2: freeze exponents, learn complex coefficients from total Z only
+true coefficients [R,L,C,dummy]= tensor([1.+0.j, 0.+1.j, 0.-1.j, 0.+0.j])
+
+all_ones: init=[(1+0j), (1+0j), (1+0j), (1+0j)]
+ learned a= [(0.9999999999999992+1.4014012172935963e-10j), (-1.1102230246251565e-15+1.0000000000201688j), (-1.1102230246251565e-15-0.9999999999791258j), (3.552713678800501e-15+1.407296501554356e-10j)]
+ train loss=1.195e-19 test loss=1.186e-19 first step loss<1e-10=1089
+ max |a-true|=1.407e-10
+
+all_zero: init=[0j, 0j, 0j, 0j]
+ learned a= [(1-8.33266788902165e-12j), 0.9999999999987575j, (1.1102230246251565e-16-1.000000000001287j), (-3.3306690738754696e-16-8.354872349514153e-12j)]
+ train loss=4.263e-22 test loss=4.229e-22 first step loss<1e-10=508
+ max |a-true|=8.355e-12
+
+walsh_tensor_row_0: init=[(1+0j), (1+0j), (1+0j), (1+0j)]
+ learned a= [(0.9999999999999992+1.4014012172935963e-10j), (-1.1102230246251565e-15+1.0000000000201688j), (-1.1102230246251565e-15-0.9999999999791258j), (3.552713678800501e-15+1.407296501554356e-10j)]
+ train loss=1.195e-19 test loss=1.186e-19 first step loss<1e-10=1089
+ max |a-true|=1.407e-10
+
+walsh_tensor_row_1: init=[(1+0j), (-1+0j), (1+0j), (-1+0j)]
+ learned a= [(0.9999999999999999+8.353207014977215e-12j), 1.0000000000012421j, -0.9999999999987175j, (2.220446049250313e-16+8.389289263277533e-12j)]
+ train loss=4.285e-22 test loss=4.251e-22 first step loss<1e-10=391
+ max |a-true|=8.389e-12
+
+walsh_tensor_row_2: init=[(1+0j), (1+0j), (-1+0j), (-1+0j)]
+ learned a= [(1+9.813927448476534e-12j), 1.0000000000014637j, -0.9999999999984885j, 9.871214956547192e-12j]
+ train loss=5.927e-22 test loss=5.880e-22 first step loss<1e-10=348
+ max |a-true|=9.871e-12
+
+walsh_tensor_row_3: init=[(1+0j), (-1+0j), (-1+0j), (1+0j)]
+ learned a= [(0.9999999999999999-1.8369639143145378e-11j), (-2.220446049250313e-16+0.9999999999972351j), (-2.220446049250313e-16-1.0000000000028648j), (6.661338147750939e-16-1.8435364346203187e-11j)]
+ train loss=2.079e-21 test loss=2.063e-21 first step loss<1e-10=554
+ max |a-true|=1.844e-11
+
+BEST coefficient init: all_zero
+held-out mean relative |Z| complex error=1.507e-11 max=3.202e-11
