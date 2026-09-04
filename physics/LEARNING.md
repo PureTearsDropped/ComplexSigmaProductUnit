@@ -153,3 +153,35 @@ study at 275 branches per batch, and the checkpoints with M₂, M₃ are saved f
 — whether the higher moments at low R predict which basin a trajectory is heading for — which is not answered
 here.  Not done: a sweep with Adam's own direction as the base (α rotating the true gradient step), longer
 horizons, and the controller (Stage C–D), which this result puts on hold.
+
+## Depth: the log-stream residual (`csigma_deep.py`, `physics/deep_test.py`, results in `physics/results/deep_test.txt`)
+
+A block is a Σ-PU whose F outputs are exponent increments, Δ_ℓ = Σ_u a_ℓ·exp(W_ℓ·L_{ℓ−1}), and the stream adds them,
+L_ℓ = L_{ℓ−1} + Δ_ℓ ⟺ x_ℓ = x_{ℓ−1}·exp(Δ_ℓ): the residual is multiplicative, Log₀ is taken once at the entry, the
+stream keeps the unwrapped phase, and a = 0 makes every block the identity at the start.  Two targets a single
+Σ-PU cannot represent: a chirp phase then a power law (Δ = 0.5i·√ω, head V = −0.8), and the chirp, then an
+amplitude law Δ = 0.8·ω^{−0.3}, then a head.  Adam from the identity start, 3 000 steps, 6 seeds, held-out
+relative loss (median / worst):
+
+| model | target 1 | target 2 |
+|---|---|---|
+| single Σ-PU, U = 4 | 1.9e−2 / 3.2e−2 | 8.5e−5 / 1.9e−4 |
+| log-stream, 1 block U=1 (the true architecture) | 8.3e−3 / 1.5e−1 | 9.0e−5 / 9.1e−3 |
+| log-stream, 2 blocks U=2 + head by least squares | 5.9e−6 / 1.1e−5 | 3.7e−6 / 2.1e−5 |
+| log-stream, 3 blocks U=2 + head by least squares | 2.4e−6 / 5.4e−6 | 7.2e−7 / 2.2e−5 |
+| 1 + i·y/s embedding, 2 blocks U=2 (s = 1 / 4) | 7.1e−3 / 2.2e−2 | 1.2e−4 / 1.6e−4 |
+
+The function class is right — the stream fits three to four orders below a single unit and the 1 + i·y/s
+embedding (whose atan-saturated phase cannot carry the chirp) — and, as everywhere in this study, gradient
+descent is what stops short: none reaches 1e−8, the exact architecture does worst (the identity start is a
+saddle for it), and overparametrised streams do better.  Inverting the head layer by layer ("final-stage-first")
+failed here because a head fitted on the identity stream is biased (held-out 0.1).
+
+What decided it: **under the log the depth collapses.**  With a one-unit head, the phase of y unwrapped along
+the grid gives Log y = Log c + V·L₀ + V·a·e^{W·L₀} — linear in (Log c, V, V·a) for a given W, a variable
+projection over one complex unknown, sieved on a 41 × 41 grid and refined by Gauss–Newton: W = 0.5, V = −0.8,
+a = 0.5i, c = 1.5 − 0.5i to machine precision (residual 4e−31) where 3 000 Adam steps left 1e−3 … 1e−6.  The
+lesson is the same one as the pencil's: the model's algebra (here: a product of exponentials is a sum of
+exponents, so a one-unit head makes the stream observable) is worth more than any step rule.  With two blocks
+or a wider head the collapse is only partial (Δ₂ = Σ a₂ e^{W₂(L₀+Δ₁)} is nested), and that is the next question;
+the phase unwrap needs the samples ordered along a path (a sweep), as the pencil needs a grid.

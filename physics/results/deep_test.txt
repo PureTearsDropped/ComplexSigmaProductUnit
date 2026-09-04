@@ -1,0 +1,26 @@
+deep Σ-PU with the log-stream residual, identity start (a = 0), Adam lr 0.02, 3000 steps; success = held-out relative loss < 1e-8 (6 seeds)
+target 1: chirp phase then a power law (1 block + head)
+   single Σ-PU, U=4 (no stream)                       0/6   held-out median 1.9e-02  worst 3.2e-02   (5 s)
+   log-stream, 1 block U=1                            0/6   held-out median 8.3e-03  worst 1.5e-01   (5 s)
+   log-stream, 1 block U=1 + head lstsq every 10      0/6   held-out median 1.1e-03  worst 1.5e-02   (5 s)
+   log-stream, 2 blocks U=2                           0/6   held-out median 2.0e-04  worst 1.3e-03   (7 s)
+   log-stream, 2 blocks U=2 + head lstsq              0/6   held-out median 6.2e-06  worst 1.1e-05   (8 s)
+   log-stream, 3 blocks U=2 + head lstsq              0/6   held-out median 2.9e-06  worst 5.4e-06   (9 s)
+   1 + i·y/s embedding, 2 blocks U=2 (s=1)            0/6   held-out median 1.9e-03  worst 7.3e-02   (9 s)
+   1 + i·y/s embedding, 2 blocks U=2 (s=4)            0/6   held-out median 2.2e-02  worst 5.4e-01   (9 s)
+target 2: chirp, then an amplitude law, then the head (2 blocks)
+   single Σ-PU, U=4 (no stream)                       0/6   held-out median 8.5e-05  worst 1.9e-04   (4 s)
+   log-stream, 1 block U=1                            0/6   held-out median 9.0e-05  worst 9.1e-03   (5 s)
+   log-stream, 1 block U=1 + head lstsq every 10      0/6   held-out median 8.9e-05  worst 1.1e-02   (6 s)
+   log-stream, 2 blocks U=2                           0/6   held-out median 1.8e-05  worst 2.1e-05   (7 s)
+   log-stream, 2 blocks U=2 + head lstsq              0/6   held-out median 4.1e-06  worst 2.1e-05   (8 s)
+   log-stream, 3 blocks U=2 + head lstsq              0/6   held-out median 7.2e-07  worst 2.2e-05   (9 s)
+   1 + i·y/s embedding, 2 blocks U=2 (s=1)            0/6   held-out median 1.2e-04  worst 5.2e-04   (9 s)
+   1 + i·y/s embedding, 2 blocks U=2 (s=4)            0/6   held-out median 1.6e-04  worst 3.9e-04   (9 s)
+
+final-stage-first (invert the head, fit the block's increment by estimates averaged), target 1:
+   held-out 1.0e-01   block W = -1.377702+0.725996j (true 0.5)  a = -0.030286+0.047748j (true 0.5i)   head V = -0.825929-0.541708j (true −0.8)  c = 1.192585-0.974813j (true 1.5−0.5i)
+
+the depth collapses under the log (one-unit head): Log y = Log c + V·L₀ + V·a·e^{W·L₀} — varpro over W alone, target 1:
+   log-domain residual 4.4e-31   W = 0.500000-0.000000j (true 0.5)   V = -0.800000+0.000000j (true −0.8)   a = -0.000000+0.500000j (true 0.5i)   c = 1.500000-0.500000j (true 1.5−0.5i)
+   reconstruction relative error 5.4e-31
