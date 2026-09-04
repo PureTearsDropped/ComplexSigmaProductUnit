@@ -1,0 +1,25 @@
+three-stage rule vs Adam vs the fit every 10 steps — success = held-out loss < 1e-8 and max|W−true| < 1e-3 (8 seeds)
+plane wave, amplitude and exponents together (F=2 U=1)
+   Adam alone                                     8/8   decided at step median   255   candidates mean    0.0   (10 s)
+   fit every 10 steps (no gate)                   8/8   decided at step median    10   candidates mean    1.0   (1 s)
+   R ≥ 0.3 candidates → fit → held-out decides    8/8   decided at step median    10   candidates mean    1.0   (1 s)
+F=1 U=3 log grid
+   Adam alone                                     4/8   decided at step median   865   candidates mean    0.0   (43 s)
+   fit every 10 steps (no gate)                   4/8   decided at step median   830   candidates mean  140.8   (44 s)
+   R ≥ 0.3 candidates → fit → held-out decides    3/8   decided at step median   830   candidates mean   18.9   (50 s)
+F=1 U=4 log grid
+   Adam alone                                     2/8   decided at step median  1923   candidates mean    0.0   (60 s)
+   fit every 10 steps (no gate)                   3/8   decided at step median  1730   candidates mean  187.1   (62 s)
+   R ≥ 0.3 candidates → fit → held-out decides    2/8   decided at step median  1730   candidates mean   32.0   (61 s)
+F=2 U=2 complex box
+   Adam alone                                     4/8   decided at step median   972   candidates mean    0.0   (53 s)
+   fit every 10 steps (no gate)                   4/8   decided at step median   800   candidates mean  146.6   (53 s)
+   R ≥ 0.3 candidates → fit → held-out decides    4/8   decided at step median  1080   candidates mean   46.4   (53 s)
+F=2 U=3 complex box
+   Adam alone                                     1/8   decided at step median  1391   candidates mean    0.0   (70 s)
+   fit every 10 steps (no gate)                   1/8   decided at step median  1300   candidates mean  190.4   (76 s)
+   R ≥ 0.3 candidates → fit → held-out decides    1/8   decided at step median  1950   candidates mean   57.2   (75 s)
+series RLC from the total impedance (integer lattice)
+   Adam alone                                     0/8   decided at step median     —   candidates mean    0.0   (106 s)
+   fit every 10 steps (no gate)                   8/8   decided at step median   390   candidates mean   45.1   (26 s)
+   R ≥ 0.3 candidates → fit → held-out decides    3/8   decided at step median    20   candidates mean    2.5   (68 s)

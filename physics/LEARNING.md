@@ -90,3 +90,29 @@ squares per check.  The two-stage rule the user proposed — R marks candidates;
 the same scheme with a continuous candidate set; the lattice version is its discrete form.  Not yet done:
 noise, the wrong-but-coherent basins as a *sequence of hypotheses* (the user's reading), and the aliases
 (a wrong exponent on which the samples agree is one the data cannot distinguish over their span).
+
+## The three-stage rule, tried (`physics/three_stage.py`, results in `physics/results/three_stage.txt`)
+
+Adam runs; every 10 steps a candidate is taken — either always, or only when the per-exponent von Mises R of the
+per-sample gradient directions (the user's statistic) reaches 0.3 — and at a candidate one estimates-averaged fit
+is made from the current W (the joint least squares: direction and length, no oracle needed), plus its rounding
+to the lattice where the exponents are known to be discrete; W fixed, a by least squares, and the **held-out**
+error of each candidate decides.  8 seeds, symmetry-broken random start.
+
+| problem | Adam alone | fit every 10 steps → held-out | R ≥ 0.3 candidates → fit → held-out |
+|---|---|---|---|
+| plane wave, amplitude and exponents together (U = 1) | 8/8 at step 255 | 8/8 at step 10 | 8/8 at step 10 (1 candidate) |
+| F=1 U=3 log grid | 4/8 | 4/8 | 3/8 (19 candidates) |
+| F=1 U=4 log grid | 2/8 | 3/8 | 2/8 (32) |
+| F=2 U=2 complex box | 4/8 | 4/8 | 4/8 (46) |
+| F=2 U=3 complex box | 1/8 | 1/8 | 1/8 (57) |
+| series RLC from the total impedance, integer lattice | 0/8 | **8/8 at step 390** | 3/8 (2.5 candidates) |
+
+Read: (1) for one unit the first candidate already finishes — one least-squares fit at step 10 replaces 255
+Adam steps, and the user's 900-step detour was never necessary; (2) with the lattice and the held-out judge
+the RLC's three units are recovered from the aggregate in every seed (the earlier round-and-verify without
+the least-squares step and without the held-out split: 5/8) — the sieve works when the candidates are dense;
+(3) the R gate at 0.3 cuts the candidates 3–5× but never adds a success and sometimes removes one (the RLC:
+3/8, the gate fires only 2–3 times in 2 000 steps) — as a *selector* R is a cost saving, not information, at
+this threshold; the information is in the verification; (4) for continuous multi-unit aggregates none of the
+three beats Adam: the wall there is the start (the pencil where the design allows it), not the step rule.
