@@ -195,6 +195,38 @@ def product_unit(a: Tot, b: Tot, A: torch.Tensor, B: torch.Tensor, total: bool =
     return tot_mul(E, c), tot_mul(E, s)
 
 
+def batched_products(u: Tot, v: Tot, A: torch.Tensor, B: torch.Tensor):
+    """the products for a BATCH of exponent sets: u, v = Log₀(x) as Tots [N, F] (or [Bn, N, F]), A, B real [Bn, U, F]
+    → (Pre, Pim) as Tots [Bn, N, U].  Every branch of a sweep is one row; the arithmetic broadcasts."""
+    Bn, Un, Fn = A.shape
+    N = u.val.shape[-2]
+    def lift(t):                                                         # [N,F] or [Bn,N,F] → [Bn,N,1,F]
+        val = t.val if t.val.dim() == 3 else t.val.unsqueeze(0)
+        flag = t.flag if t.flag.dim() == 3 else t.flag.unsqueeze(0)
+        return Tot(val.unsqueeze(2).expand(Bn, N, Un, Fn), flag.unsqueeze(2).expand(Bn, N, Un, Fn))
+    u4, v4 = lift(u), lift(v)
+    A4 = Tot(A.unsqueeze(1).expand(Bn, N, Un, Fn)); B4 = Tot(B.unsqueeze(1).expand(Bn, N, Un, Fn))
+    Au = tot_mul(A4, u4); Bv = tot_mul(B4, v4); Av = tot_mul(A4, v4); Bu = tot_mul(B4, u4)
+    Ure = tot_add(Au, Tot(-Bv.val, Bv.flag)); Vim = tot_add(Av, Bu)
+    U = Tot(Ure.val[..., 0], Ure.flag[..., 0]); V = Tot(Vim.val[..., 0], Vim.flag[..., 0])
+    for j in range(1, Fn):
+        U = tot_add(U, Tot(Ure.val[..., j], Ure.flag[..., j])); V = tot_add(V, Tot(Vim.val[..., j], Vim.flag[..., j]))
+    E = tot_exp(U); c, s = tot_cis(V)
+    return tot_mul(E, c), tot_mul(E, s)
+
+
+def batched_sum(Pre: Tot, Pim: Tot, are: torch.Tensor, aim: torch.Tensor):
+    """y[b, n] = Σ_u (are + i·aim)[b, u]·P[b, n, u]  →  (yre, yim) as Tots [Bn, N]."""
+    Bn, N, Un = Pre.val.shape
+    ar = Tot(are.unsqueeze(1).expand(Bn, N, Un)); ai = Tot(aim.unsqueeze(1).expand(Bn, N, Un))
+    t1 = tot_mul(ar, Pre); t2 = tot_mul(ai, Pim); t3 = tot_mul(ar, Pim); t4 = tot_mul(ai, Pre)
+    yre = tot_add(t1, Tot(-t2.val, t2.flag)); yim = tot_add(t3, t4)
+    Yre = Tot(yre.val[..., 0], yre.flag[..., 0]); Yim = Tot(yim.val[..., 0], yim.flag[..., 0])
+    for u in range(1, Un):
+        Yre = tot_add(Yre, Tot(yre.val[..., u], yre.flag[..., u])); Yim = tot_add(Yim, Tot(yim.val[..., u], yim.flag[..., u]))
+    return Yre, Yim
+
+
 def complex_div(are: Tot, aim: Tot, bre: Tot, bim: Tot):
     """(are + i·aim)/(bre + i·bim) as Tots, through the real operations (a/0 = 0 included)."""
     den = tot_add(tot_mul(bre, bre), tot_mul(bim, bim))

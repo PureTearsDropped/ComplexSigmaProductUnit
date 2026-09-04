@@ -1,0 +1,56 @@
+ALL: 631 checkpoints with Adam(t+K) > 1e-8
+   μ+π direction, Adam length (α=0, ρ=1, κ=∞)     gain over Adam: median   0.01   >2×    0   <0.5× (worse)  445
+   best deterministic α, ρ=1                      gain over Adam: median   0.22   >2×    0   <0.5× (worse)  385
+   best ρ, α=0, κ=∞                               gain over Adam: median   0.32   >2×    0   <0.5× (worse)  363
+   best deterministic (α, ρ)                      gain over Adam: median   0.56   >2×    0   <0.5× (worse)  301
+   best of all 275 (winner's curse)               gain over Adam: median   0.60   >2×    0   <0.5× (worse)  290
+   noise draws (α=0, ρ=1): median draw            gain over Adam: median   0.01   >2×    0   <0.5× (worse)  441
+   sign of the best deterministic α = sign of the GN angle from μ+π: 339/619
+max R in [0, 0.3): 417 checkpoints with Adam(t+K) > 1e-8
+   μ+π direction, Adam length (α=0, ρ=1, κ=∞)     gain over Adam: median   0.02   >2×    0   <0.5× (worse)  273
+   best deterministic α, ρ=1                      gain over Adam: median   0.44   >2×    0   <0.5× (worse)  219
+   best ρ, α=0, κ=∞                               gain over Adam: median   0.52   >2×    0   <0.5× (worse)  205
+   best deterministic (α, ρ)                      gain over Adam: median   0.80   >2×    0   <0.5× (worse)  153
+   best of all 275 (winner's curse)               gain over Adam: median   0.83   >2×    0   <0.5× (worse)  144
+   noise draws (α=0, ρ=1): median draw            gain over Adam: median   0.04   >2×    0   <0.5× (worse)  270
+   sign of the best deterministic α = sign of the GN angle from μ+π: 222/408
+max R in [0.3, 0.6): 132 checkpoints with Adam(t+K) > 1e-8
+   μ+π direction, Adam length (α=0, ρ=1, κ=∞)     gain over Adam: median   0.00   >2×    0   <0.5× (worse)  100
+   best deterministic α, ρ=1                      gain over Adam: median   0.01   >2×    0   <0.5× (worse)   94
+   best ρ, α=0, κ=∞                               gain over Adam: median   0.05   >2×    0   <0.5× (worse)   93
+   best deterministic (α, ρ)                      gain over Adam: median   0.20   >2×    0   <0.5× (worse)   83
+   best of all 275 (winner's curse)               gain over Adam: median   0.23   >2×    0   <0.5× (worse)   83
+   noise draws (α=0, ρ=1): median draw            gain over Adam: median   0.00   >2×    0   <0.5× (worse)   99
+   sign of the best deterministic α = sign of the GN angle from μ+π: 77/132
+max R in [0.6, 1.01): 82 checkpoints with Adam(t+K) > 1e-8
+   μ+π direction, Adam length (α=0, ρ=1, κ=∞)     gain over Adam: median   0.00   >2×    0   <0.5× (worse)   72
+   best deterministic α, ρ=1                      gain over Adam: median   0.00   >2×    0   <0.5× (worse)   72
+   best ρ, α=0, κ=∞                               gain over Adam: median   0.01   >2×    0   <0.5× (worse)   65
+   best deterministic (α, ρ)                      gain over Adam: median   0.03   >2×    0   <0.5× (worse)   65
+   best of all 275 (winner's curse)               gain over Adam: median   0.04   >2×    0   <0.5× (worse)   63
+   noise draws (α=0, ρ=1): median draw            gain over Adam: median   0.00   >2×    0   <0.5× (worse)   72
+   sign of the best deterministic α = sign of the GN angle from μ+π: 40/79
+wave: 50 checkpoints with Adam(t+K) > 1e-8
+   μ+π direction, Adam length (α=0, ρ=1, κ=∞)     gain over Adam: median   0.01   >2×    0   <0.5× (worse)   42
+   best deterministic α, ρ=1                      gain over Adam: median   0.01   >2×    0   <0.5× (worse)   42
+   best ρ, α=0, κ=∞                               gain over Adam: median   0.03   >2×    0   <0.5× (worse)   41
+   best deterministic (α, ρ)                      gain over Adam: median   0.04   >2×    0   <0.5× (worse)   40
+   best of all 275 (winner's curse)               gain over Adam: median   0.05   >2×    0   <0.5× (worse)   40
+   noise draws (α=0, ρ=1): median draw            gain over Adam: median   0.01   >2×    0   <0.5× (worse)   42
+   sign of the best deterministic α = sign of the GN angle from μ+π: 27/44
+grid3: 282 checkpoints with Adam(t+K) > 1e-8
+   μ+π direction, Adam length (α=0, ρ=1, κ=∞)     gain over Adam: median   0.00   >2×    0   <0.5× (worse)  173
+   best deterministic α, ρ=1                      gain over Adam: median   0.05   >2×    0   <0.5× (worse)  166
+   best ρ, α=0, κ=∞                               gain over Adam: median   0.04   >2×    0   <0.5× (worse)  166
+   best deterministic (α, ρ)                      gain over Adam: median   0.41   >2×    0   <0.5× (worse)  146
+   best of all 275 (winner's curse)               gain over Adam: median   0.48   >2×    0   <0.5× (worse)  143
+   noise draws (α=0, ρ=1): median draw            gain over Adam: median   0.00   >2×    0   <0.5× (worse)  174
+   sign of the best deterministic α = sign of the GN angle from μ+π: 174/281
+box2: 299 checkpoints with Adam(t+K) > 1e-8
+   μ+π direction, Adam length (α=0, ρ=1, κ=∞)     gain over Adam: median   0.03   >2×    0   <0.5× (worse)  230
+   best deterministic α, ρ=1                      gain over Adam: median   0.34   >2×    0   <0.5× (worse)  177
+   best ρ, α=0, κ=∞                               gain over Adam: median   0.45   >2×    0   <0.5× (worse)  156
+   best deterministic (α, ρ)                      gain over Adam: median   0.69   >2×    0   <0.5× (worse)  115
+   best of all 275 (winner's curse)               gain over Adam: median   0.72   >2×    0   <0.5× (worse)  107
+   noise draws (α=0, ρ=1): median draw            gain over Adam: median   0.04   >2×    0   <0.5× (worse)  225
+   sign of the best deterministic α = sign of the GN angle from μ+π: 138/294

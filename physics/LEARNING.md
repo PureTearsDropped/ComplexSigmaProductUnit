@@ -116,3 +116,40 @@ the least-squares step and without the held-out split: 5/8) — the sieve works 
 3/8, the gate fires only 2–3 times in 2 000 steps) — as a *selector* R is a cost saving, not information, at
 this threshold; the information is in the verification; (4) for continuous multi-unit aggregates none of the
 three beats Adam: the wall there is the start (the pencil where the design allows it), not the step rule.
+
+## The steering sweep (the research note's Stage A + B), and what it says
+
+`physics/steering_sweep.py` (harvest / sweep / analyze), `steering_analyze2.py`, `steering_analyze3.py`; results in
+`physics/results/steering*`.  Three tasks (wave, F=1 U=3 log grid, F=2 U=2 complex box) × 8 seeds × 2 000 Adam steps,
+the per-sample gradients in closed form (g_n = −2w·e_n·conj(a·P_n·L_n)), every 10 steps the circular moments of
+every exponent weight (M₁ = R e^{iμ}, κ, M₂, M₃), 4 824 checkpoints.  From 1 019 of them (every 50 steps + the three
+highest-R events per trajectory) 275 branches at once as one batch — α ∈ ±30° (11) × ρ ∈ {0.5…1.5} (5) ×
+κ_steer ∈ {5, 10, 20, 50, ∞} (5), the step of every exponent weight taking the direction φ ~ VM(μ+π+α, κ_steer)
+with Adam's length × ρ, the coefficients stepping with Adam, K = 30 — 280 225 rollouts, 36 min on the RTX 5090
+(the forward is the Tot arithmetic; at this size the GPU is launch-bound, 33 ms per step, and the CPU is no slower).
+
+Three readings of the same table, in the order they were made — the first two are traps:
+
+1. *Best of 275 against the α = 0, ρ = 1, κ = ∞ branch*: median "gain" 64×, > 10× at 668 of 1 019 checkpoints,
+   the winner almost always stochastic.  This is the winner's curse — the maximum of 275 draws — and the sign of
+   the best α agrees with the Gauss–Newton direction's side at chance (443/844).
+2. *Deterministic branches only, the floor excluded*: the step length dominates (ρ = 0.5 best at 690 of 778
+   checkpoints, median 16×), a best-of-11 α still 6× — and the best α keeps its sign across consecutive
+   checkpoints 81 % of the time.  Still against the wrong baseline.
+3. **Against the true Adam continuation** (the harvest trajectory itself, K steps on): the α = 0, ρ = 1, κ = ∞
+   branch is not Adam — it keeps Adam's step *length* but takes the direction μ+π of the unit-vector mean of the
+   per-sample gradients, which is not the gradient — and it is ~100× worse than Adam after 30 steps (median
+   ratio 0.01).  Every steered branch, including the best of all 275 per checkpoint, is worse than plain Adam
+   at the median (0.60), and **no branch beats Adam by 2× at any of the 631 checkpoints** where Adam is not
+   at the floor; the same holds in every R bin and on every task.  The 81 % sign consistency of reading 2 is the
+   consistency of the correction that rotates a bad direction back toward Adam's.
+
+So, as specified in the note (μ+π as the base direction, a rotation α, a length ρ, von Mises noise), the
+steering does not beat the optimizer it starts from on this horizon — the note's own 0° steering was slower
+than Adam (117 vs 110 updates) and its +5° gain (94) is the size of such a rotation back.  What does beat Adam
+here is known and needs no sweep: one joint least-squares fit from the same checkpoints (2–6 iterations to the
+floor from the consensus events; `gn_from_trajectory.py`).  The sweep harness stays: it runs any branching
+study at 275 branches per batch, and the checkpoints with M₂, M₃ are saved for the other question the note asks
+— whether the higher moments at low R predict which basin a trajectory is heading for — which is not answered
+here.  Not done: a sweep with Adam's own direction as the base (α rotating the true gradient step), longer
+horizons, and the controller (Stage C–D), which this result puts on hold.

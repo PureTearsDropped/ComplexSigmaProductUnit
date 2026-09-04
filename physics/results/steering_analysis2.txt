@@ -1,0 +1,32 @@
+ALL: 778 checkpoints (Adam not at the floor)
+   deterministic α (ρ=1): best-of-11 gain median 6.38, >2× in 475, >10× in 348;  best α ≠ 0 in 756, |α*| median 30.0°, sign = GN angle's sign 414/756
+   step length only (α=0, κ=∞): best-of-5 ρ gain median 16.48; ρ* = 1.5 in 42, 0.5 in 690
+   pure noise around Adam's direction (α=0, ρ=1, κ<∞, 4 draws): beats Adam in 74 % of draws (50 % = neutral); median-draw gain median 1.10
+max R in [0, 0.3): 466 checkpoints (Adam not at the floor)
+   deterministic α (ρ=1): best-of-11 gain median 5.18, >2× in 280, >10× in 194;  best α ≠ 0 in 452, |α*| median 30.0°, sign = GN angle's sign 241/452
+   step length only (α=0, κ=∞): best-of-5 ρ gain median 11.83; ρ* = 1.5 in 33, 0.5 in 392
+   pure noise around Adam's direction (α=0, ρ=1, κ<∞, 4 draws): beats Adam in 74 % of draws (50 % = neutral); median-draw gain median 1.11
+max R in [0.3, 0.6): 177 checkpoints (Adam not at the floor)
+   deterministic α (ρ=1): best-of-11 gain median 9.45, >2× in 120, >10× in 87;  best α ≠ 0 in 174, |α*| median 30.0°, sign = GN angle's sign 103/174
+   step length only (α=0, κ=∞): best-of-5 ρ gain median 99.52; ρ* = 1.5 in 4, 0.5 in 169
+   pure noise around Adam's direction (α=0, ρ=1, κ<∞, 4 draws): beats Adam in 70 % of draws (50 % = neutral); median-draw gain median 1.05
+max R in [0.6, 1.01): 135 checkpoints (Adam not at the floor)
+   deterministic α (ρ=1): best-of-11 gain median 8.37, >2× in 75, >10× in 67;  best α ≠ 0 in 130, |α*| median 20.0°, sign = GN angle's sign 70/130
+   step length only (α=0, κ=∞): best-of-5 ρ gain median 18.60; ρ* = 1.5 in 5, 0.5 in 129
+   pure noise around Adam's direction (α=0, ρ=1, κ<∞, 4 draws): beats Adam in 78 % of draws (50 % = neutral); median-draw gain median 1.10
+wave: 107 checkpoints (Adam not at the floor)
+   deterministic α (ρ=1): best-of-11 gain median 2.00, >2× in 53, >10× in 48;  best α ≠ 0 in 94, |α*| median 15.0°, sign = GN angle's sign 54/94
+   step length only (α=0, κ=∞): best-of-5 ρ gain median 14.31; ρ* = 1.5 in 0, 0.5 in 107
+   pure noise around Adam's direction (α=0, ρ=1, κ<∞, 4 draws): beats Adam in 76 % of draws (50 % = neutral); median-draw gain median 1.08
+grid3: 339 checkpoints (Adam not at the floor)
+   deterministic α (ρ=1): best-of-11 gain median 48.22, >2× in 214, >10× in 185;  best α ≠ 0 in 335, |α*| median 30°, sign = GN angle's sign 202/335
+   step length only (α=0, κ=∞): best-of-5 ρ gain median 415.22; ρ* = 1.5 in 38, 0.5 in 285
+   pure noise around Adam's direction (α=0, ρ=1, κ<∞, 4 draws): beats Adam in 65 % of draws (50 % = neutral); median-draw gain median 1.02
+box2: 332 checkpoints (Adam not at the floor)
+   deterministic α (ρ=1): best-of-11 gain median 4.21, >2× in 208, >10× in 115;  best α ≠ 0 in 327, |α*| median 30°, sign = GN angle's sign 158/327
+   step length only (α=0, κ=∞): best-of-5 ρ gain median 8.94; ρ* = 1.5 in 4, 0.5 in 298
+   pure noise around Adam's direction (α=0, ρ=1, κ<∞, 4 draws): beats Adam in 82 % of draws (50 % = neutral); median-draw gain median 1.14
+consistency: consecutive checkpoints (50 steps apart) where a deterministic α ≠ 0 helps > 1.5× in both: same sign in 375/462 (81 %; 50 % = no persistent side)
+
+at ρ = 0.5: 742 checkpoints; best-of-11 α gain over α = 0: median 1.62, >2× in 351, >10× in 225; α* ≠ 0 in 725; sign = GN 371/725; noise beats the deterministic step in 71 % of draws
+at ρ = 1.0: 778 checkpoints; best-of-11 α gain over α = 0: median 6.38, >2× in 475, >10× in 348; α* ≠ 0 in 756; sign = GN 414/756; noise beats the deterministic step in 74 % of draws

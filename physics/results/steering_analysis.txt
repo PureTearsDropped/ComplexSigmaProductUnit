@@ -1,0 +1,6 @@
+1019 checkpoints; per checkpoint the best branch vs Adam (α=0, ρ=1, κ=∞), K steps ahead, held-out loss
+gain of the best branch over Adam (ratio of held-out losses after K steps): median 63.95, > 2× in 795/1019, > 10× in 668/1019
+deterministic α (ρ=1, κ=∞): best α ≠ 0 at 844/1019 checkpoints; of those, sign(α*) = sign(angle of the GN direction from μ+π): 443/844
+  max R in [0, 0.3): 673 checkpoints, median gain 55.95, best α ≠ 0 in 526, median |α*| 20°, stochastic (κ<∞) wins 625
+  max R in [0.3, 0.6): 202 checkpoints, median gain 153.47, best α ≠ 0 in 180, median |α*| 30.0°, stochastic (κ<∞) wins 191
+  max R in [0.6, 1.01): 144 checkpoints, median gain 50.03, best α ≠ 0 in 138, median |α*| 20.0°, stochastic (κ<∞) wins 138
