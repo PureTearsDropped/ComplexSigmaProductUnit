@@ -62,11 +62,21 @@ On the aggregate problem (U units from one observable) the pencil start is exact
 falls to 2/8; from a random start no average finds the units; the pencil breaks under 0.1 % noise; the von
 Mises centre is 6× closer under 15 % outliers.  Numbers and the caveats: [`physics/LEARNING.md`](physics/LEARNING.md).
 
+## Depth: the residual in the log domain
+
+A block's outputs are exponent increments and the stream adds them, L_ℓ = L_{ℓ−1} + Δ_ℓ ⟺ x_ℓ = x_{ℓ−1}·exp(Δ_ℓ) —
+the multiplicative residual of the multiplicative world, Log₀ taken once at the entry, the phase unwrapped, the
+identity at the start.  Why, and what the two-layer targets showed (the stream beats a single unit and the
+1 + i·y/s embedding by 3–4 orders; Adam still stops short; a one-unit head collapses the depth under the log and a
+one-unknown varpro recovers everything exactly): [`docs/log_stream_residual.md`](docs/log_stream_residual.md)
+(Japanese), `csigma_deep.py`, `physics/deep_test.py`.
+
 ## Files
 
 - `complex_sigma_product_unit.py` — the unit: `log0` / `arg0` / `clog0` (the reserved-word logarithm), `product_unit`,
   `tot_exp` (amplitude saturation, phase kept), `complex_sum`, `masked_cmse` (a flagged sample is no number),
   `totalize_grads` (the gradient floor as arithmetic), `ComplexSigmaProductUnit`.  Test: `test_complex_sigma_product_unit.py`.
+- `csigma_deep.py` — the deep Σ-PU with the log-stream residual (`DeepCSPU`; `embed='oneplus'` for the 1 + i·y/s comparison).
 - `csigma_fit.py` — the estimates-averaged learner (least squares, Gauss–Newton in the log domain, the matrix pencil, the von Mises centre); `physics/gd_vs_moments.py`, `physics/outlier_test.py` compare it with Adam.
 - `physics/physics_total.py` — the three experiments on `ComplexSigmaProductUnit`, IEEE and total, with the boundaries.
 - `physics/rlc_physics_demo.py`, `physics/schrodinger_plane_wave_demo.py` — the original experiments (PyTorch, float64), `physics/README_experiments_1_2.md`.
