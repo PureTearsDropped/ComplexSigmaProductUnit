@@ -53,11 +53,21 @@ julia julia/cpe_total_demo.jl                   # the CPE on the polar Julia twi
 `--repo /path/to/total-arith-cuda` or the environment variable `TOTAL_ARITH_CUDA` point to the
 arithmetic if it is not next to this repository.  Results as run are in `physics/results/`.
 
+## Learning: gradients averaged, or estimates averaged?
+
+`csigma_fit.py` learns the unit without gradient steps — coefficients by least squares, exponents by the
+least-squares average of the per-sample corrections (variable projection), a matrix-pencil (Prony) start on a
+log-spaced sweep, and a von Mises centre of the per-sample corrections as the robust alternative to the mean.
+On the aggregate problem (U units from one observable) the pencil start is exact up to U = 4 where Adam
+falls to 2/8; from a random start no average finds the units; the pencil breaks under 0.1 % noise; the von
+Mises centre is 6× closer under 15 % outliers.  Numbers and the caveats: [`physics/LEARNING.md`](physics/LEARNING.md).
+
 ## Files
 
 - `complex_sigma_product_unit.py` — the unit: `log0` / `arg0` / `clog0` (the reserved-word logarithm), `product_unit`,
   `tot_exp` (amplitude saturation, phase kept), `complex_sum`, `masked_cmse` (a flagged sample is no number),
   `totalize_grads` (the gradient floor as arithmetic), `ComplexSigmaProductUnit`.  Test: `test_complex_sigma_product_unit.py`.
+- `csigma_fit.py` — the estimates-averaged learner (least squares, Gauss–Newton in the log domain, the matrix pencil, the von Mises centre); `physics/gd_vs_moments.py`, `physics/outlier_test.py` compare it with Adam.
 - `physics/physics_total.py` — the three experiments on `ComplexSigmaProductUnit`, IEEE and total, with the boundaries.
 - `physics/rlc_physics_demo.py`, `physics/schrodinger_plane_wave_demo.py` — the original experiments (PyTorch, float64), `physics/README_experiments_1_2.md`.
 - `physics/EXPERIMENT_RESULT.md`, `physics/EXPERIMENT_RESULT_TOTAL.md` — results and limitations.

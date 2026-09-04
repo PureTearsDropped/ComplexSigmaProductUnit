@@ -1,0 +1,6 @@
+outliers   0% start pencil:  lstsq: median |W−true| 9.3e-02, worst 9.9e+00   vonmises: median |W−true| 2.9e-01, worst 1.2e+01
+outliers   0% start truth :  lstsq: median |W−true| 6.9e-05, worst 3.0e-04   vonmises: median |W−true| 2.3e-05, worst 1.0e-04
+outliers   5% start pencil:  lstsq: median |W−true| 7.4e+00, worst 8.7e+00   vonmises: median |W−true| 7.7e+00, worst 9.2e+00
+outliers   5% start truth :  lstsq: median |W−true| 2.2e-03, worst 1.7e-02   vonmises: median |W−true| 1.3e-03, worst 3.3e-02
+outliers  15% start pencil:  lstsq: median |W−true| 5.7e+00, worst 1.1e+01   vonmises: median |W−true| 5.7e+00, worst 1.0e+01
+outliers  15% start truth :  lstsq: median |W−true| 9.4e-03, worst 2.8e-02   vonmises: median |W−true| 1.6e-03, worst 5.5e-02

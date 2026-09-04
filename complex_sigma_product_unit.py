@@ -297,6 +297,13 @@ class ComplexSigmaProductUnit(torch.nn.Module):
         e = self.eps
         return _positive(self.arp, e) - _positive(self.arn, e), _positive(self.aip, e) - _positive(self.ain, e)
 
+    def set_exponent(self, A: torch.Tensor, B: torch.Tensor):
+        """initialise W = A + iB (real [U, F] each) exactly, as differences of channels ≥ 1."""
+        with torch.no_grad():
+            for p, v in ((self.wrp, 1 + A.double().clamp(min=0)), (self.wrn, 1 + (-A.double()).clamp(min=0)),
+                         (self.wip, 1 + B.double().clamp(min=0)), (self.win, 1 + (-B.double()).clamp(min=0))):
+                p.copy_(_raw_for(v, self.eps))
+
     def set_coefficient(self, a: torch.Tensor):
         """initialise a (complex [O, U]) exactly, as differences of channels ≥ 1 (the Walsh-row initialisations of
         the RLC demo go through here)."""
